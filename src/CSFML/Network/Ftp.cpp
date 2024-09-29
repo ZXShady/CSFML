@@ -29,36 +29,8 @@
 #include <CSFML/Network/FtpStruct.hpp>
 
 #include <SFML/Network/IpAddress.hpp>
-#include <SFML/System/String.hpp>
 
 #include <cstring>
-
-
-namespace
-{
-////////////////////////////////////////////////////////////
-// Ensure char32_t has the same size as sfChar32 (uint32_t)
-// Identical alignment and size is required because we're type punning
-// when doing sfChar32* <-> char32_t* casts
-////////////////////////////////////////////////////////////
-static_assert(sizeof(sfChar32) == sizeof(char32_t));
-static_assert(alignof(sfChar32) == alignof(char32_t));
-
-////////////////////////////////////////////////////////////
-// Define utils to copy to sfChar32
-////////////////////////////////////////////////////////////
-[[nodiscard]] sfChar32* copyToChar32(const sf::String& str)
-{
-    const std::size_t byteCount = sizeof(sfChar32) * str.getSize();
-    auto*             utf32     = static_cast<sfChar32*>(std::malloc(byteCount + sizeof(sfChar32)));
-    if (!utf32)
-        return nullptr;
-    std::memcpy(utf32, str.getData(), byteCount);
-    utf32[str.getSize()] = 0;
-
-    return utf32;
-}
-} // namespace
 
 
 ////////////////////////////////////////////////////////////
@@ -150,8 +122,16 @@ const char* sfFtpDirectoryResponse_getDirectory(const sfFtpDirectoryResponse* ft
 ////////////////////////////////////////////////////////////
 const sfChar32* sfFtpDirectoryResponse_getDirectoryUnicode(const sfFtpDirectoryResponse* ftpDirectoryResponse)
 {
+    static_assert(sizeof(sfChar32) == sizeof(char32_t));
     assert(ftpDirectoryResponse);
-    return copyToChar32(sf::String(ftpDirectoryResponse->getDirectory().string()));
+
+    const auto        directory = ftpDirectoryResponse->getDirectory().u32string();
+    const std::size_t byteCount = sizeof(sfChar32) * (directory.size() + 1);
+    auto*             utf32     = static_cast<sfChar32*>(std::malloc(byteCount));
+    if (!utf32)
+        return nullptr;
+    std::memcpy(utf32, directory.data(), byteCount);
+    return utf32;
 }
 
 
