@@ -38,10 +38,7 @@
 ////////////////////////////////////////////////////////////
 sfCircleShape* sfCircleShape_create()
 {
-    auto* shape    = new sfCircleShape;
-    shape->Texture = nullptr;
-
-    return shape;
+    return new sfCircleShape;
 }
 
 
