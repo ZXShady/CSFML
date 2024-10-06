@@ -37,14 +37,11 @@
 ////////////////////////////////////////////////////////////
 sfWindow* sfWindow_create(sfVideoMode mode, const char* title, uint32_t style, sfWindowState state, const sfContextSettings* settings)
 {
-    // Convert context settings
-    const sf::ContextSettings params = settings ? convertContextSettings(*settings) : sf::ContextSettings();
-
-    // Create the window
-    auto* window = new sfWindow;
-    window->create(convertVideoMode(mode), title, style, static_cast<sf::State>(state), params);
-
-    return window;
+    return new sfWindow(convertVideoMode(mode),
+                        title,
+                        style,
+                        static_cast<sf::State>(state),
+                        settings ? convertContextSettings(*settings) : sf::ContextSettings());
 }
 
 ////////////////////////////////////////////////////////////
@@ -54,28 +51,18 @@ sfWindow* sfWindow_createUnicode(sfVideoMode              mode,
                                  sfWindowState            state,
                                  const sfContextSettings* settings)
 {
-    // Convert context settings
-    const sf::ContextSettings params = settings ? convertContextSettings(*settings) : sf::ContextSettings();
-
-    // Create the window
-    auto* window = new sfWindow;
-    window->create(convertVideoMode(mode), reinterpret_cast<const char32_t*>(title), style, static_cast<sf::State>(state), params);
-
-    return window;
+    return new sfWindow(convertVideoMode(mode),
+                        reinterpret_cast<const char32_t*>(title),
+                        style,
+                        static_cast<sf::State>(state),
+                        settings ? convertContextSettings(*settings) : sf::ContextSettings());
 }
 
 
 ////////////////////////////////////////////////////////////
 sfWindow* sfWindow_createFromHandle(sfWindowHandle handle, const sfContextSettings* settings)
 {
-    // Convert context settings
-    const sf::ContextSettings params = settings ? convertContextSettings(*settings) : sf::ContextSettings();
-
-    // Create the window
-    auto* window = new sfWindow;
-    window->create(handle, params);
-
-    return window;
+    return new sfWindow(handle, settings ? convertContextSettings(*settings) : sf::ContextSettings());
 }
 
 

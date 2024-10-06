@@ -38,33 +38,24 @@
 ////////////////////////////////////////////////////////////
 sfWindowBase* sfWindowBase_create(sfVideoMode mode, const char* title, uint32_t style, sfWindowState state)
 {
-    // Create the window
-    auto* windowBase = new sfWindowBase;
-    windowBase->create(convertVideoMode(mode), title, style, static_cast<sf::State>(state));
-
-    return windowBase;
+    return new sfWindowBase(convertVideoMode(mode), title, style, static_cast<sf::State>(state));
 }
 
 
 ////////////////////////////////////////////////////////////
 sfWindowBase* sfWindowBase_createUnicode(sfVideoMode mode, const sfChar32* title, uint32_t style, sfWindowState state)
 {
-    // Create the window
-    auto* windowBase = new sfWindowBase;
-    windowBase->create(convertVideoMode(mode), reinterpret_cast<const char32_t*>(title), style, static_cast<sf::State>(state));
-
-    return windowBase;
+    return new sfWindowBase(convertVideoMode(mode),
+                            reinterpret_cast<const char32_t*>(title),
+                            style,
+                            static_cast<sf::State>(state));
 }
 
 
 ////////////////////////////////////////////////////////////
 sfWindowBase* sfWindowBase_createFromHandle(sfWindowHandle handle)
 {
-    // Create the window
-    auto* windowBase = new sfWindowBase;
-    windowBase->create(handle);
-
-    return windowBase;
+    return new sfWindowBase(handle);
 }
 
 
