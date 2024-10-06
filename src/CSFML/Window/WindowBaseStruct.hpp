@@ -35,4 +35,5 @@
 ////////////////////////////////////////////////////////////
 struct sfWindowBase : sf::WindowBase
 {
+	using sf::WindowBase::WindowBase;
 };

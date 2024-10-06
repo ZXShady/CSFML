@@ -41,7 +41,7 @@ sfView* sfView_create()
 ////////////////////////////////////////////////////////////
 sfView* sfView_createFromRect(sfFloatRect rectangle)
 {
-    return new sfView{sf::View(convertRect(rectangle))};
+    return new sfView(convertRect(rectangle));
 }
 
 

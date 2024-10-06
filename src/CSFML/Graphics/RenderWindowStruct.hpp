@@ -37,6 +37,8 @@
 ////////////////////////////////////////////////////////////
 struct sfRenderWindow : sf::RenderWindow
 {
+    using sf::RenderWindow::RenderWindow;
+
     sfView DefaultView;
     sfView CurrentView;
 };
